@@ -3,32 +3,44 @@ import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { TODO } from '../model/todo';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/catch';
 
+
+/**
+ * This class provides the TodoList service with methods to read  and add new todoitem.
+ */
 @Injectable()
 export class TodoService {
 
+  /**
+   * Creates a new Service with the injected Http.
+   * @param {Http} http - The injected Http.
+   * @constructor
+   */
   constructor(private httpService: Http) {
   }
 
   /**
-  * Running a method which returns Observeble (in Java word it names like Stream) of strong typed Model wraped as
-   *
-   * @return list of TODO items
-  * */
+   * Returns an Observable for the HTTP GET request for the JSON resource.
+   * @return {TODO[]} The Observable for the HTTP request.
+   */
   getListOfItems(): Observable<TODO[]> {
-    return this.httpService.get('assets/todo.json') // TODO: API
+    return this.httpService.get('assets/todo.json') //Using response from local json file
       .map(response => response.json().results)
-      .map((items: any[]) => items.map(item => new TODO(item)));
+      .map((items: any[]) => items.map(item => new TODO(item)))
+      .catch(this.handleError);
   }
 
-  /*
-  * Main idea of this method to handle http POST and provide serialized internal object from UI
-  * On result of HTTP response we will have entity with valid/real id
-  * */
-  addItem(item: TODO): Observable<TODO> {
-    return this.httpService.post('/api/add', item.serialize()) // TODO: API
-      .map(response => response.json())
-      .map((items: any) => new TODO(item));
+  /**
+   * Handle HTTP error
+   */
+  private handleError (error: any) {
+    // In a real world app, we might use a remote logging infrastructure
+    // We'd also dig deeper into the error to get a better message
+    const errMsg: any = (error.message) ? error.message :
+      error.status ? `${error.status} - ${error.statusText}` : 'Server error';
+    console.error(errMsg); // log to console instead
+    return Observable.throw(errMsg);
   }
 }
 
