@@ -12,6 +12,9 @@ export class AppComponent implements OnInit {
   /* Collection of todo items */
   collection:  TODO[];
 
+  /* Double binded field in model*/
+  name: string;
+
   constructor(private service: TodoService) {
   }
 
@@ -19,4 +22,29 @@ export class AppComponent implements OnInit {
     this.service.getListOfItems()
       .subscribe((item: TODO[]) => this.collection = item);
   }
+
+
+  // V1 (simple collection manipulation)
+  addItem() {
+    const item: TODO = new TODO();
+    item.description = this.name;
+    this.collection.push(item);
+  }
+
+  /*
+  * Real World API request
+  * */
+  addItem_live() {
+    const item: TODO = new TODO();
+    item.description = this.name;
+    this.service.addItem(item)
+      .subscribe(entity => this.collection.push(entity));
+  }
+
+  deleteItem(target: TODO) {
+    this.collection = this.collection.filter(item => item !== target);
+  }
 }
+
+
+

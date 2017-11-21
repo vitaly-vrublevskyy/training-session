@@ -1,8 +1,13 @@
-<!--The content below is only a placeholder and can be replaced.-->
+<form (submit)="addItem()">
+  <input [(ngModel)]="name"  name="something" placeholder="TODO name">
+  <button type="submit">Add</button>
+</form>
+
 
 <ul>
   <li *ngFor="let item of collection">
-    <h2> {{ item.description }} </h2>
+      <h2> {{ item.description }} </h2>
+      <button (click)="deleteItem(item)">Delete</button>
   </li>
 </ul>
 

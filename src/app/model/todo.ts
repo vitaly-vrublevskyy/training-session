@@ -15,4 +15,10 @@ export class TODO {
     }
   }
 
+  serialize(): any {
+    return {
+      description: this.description
+    };
+  }
+
 }

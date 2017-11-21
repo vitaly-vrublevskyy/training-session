@@ -20,5 +20,15 @@ export class TodoService {
       .map(response => response.json().results)
       .map((items: any[]) => items.map(item => new TODO(item)));
   }
+
+  /*
+  * Main idea of this method to handle http POST and provide serialized internal object from UI
+  * On result of HTTP response we will have entity with valid/real id
+  * */
+  addItem(item: TODO): Observable<TODO> {
+    return this.httpService.post('/api/add', item.serialize()) // TODO: API
+      .map(response => response.json())
+      .map((items: any) => new TODO(item));
+  }
 }
 
