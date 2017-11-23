@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-import { TODO } from '../model/todo';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
+import { Todo } from '../model/todo';
 
 
 /**
@@ -11,6 +9,16 @@ import 'rxjs/add/operator/catch';
  */
 @Injectable()
 export class TodoService {
+  get todos(): Todo[] {
+    return this._todos;
+  }
+
+  set todos(value: Todo[]) {
+    this._todos = value;
+    this.saveLocally();
+  }
+
+  private _todos: Todo[];
 
   /**
    * Creates a new Service with the injected Http.
@@ -20,15 +28,65 @@ export class TodoService {
   constructor(private httpService: Http) {
   }
 
+  getListOfLocalItems(): Observable<Todo[]> {
+    const raw: string = localStorage.getItem('todo-list') || '[]';
+    const items: any[] = JSON.parse(raw);
+    this._todos = items.map(item => new Todo(item));
+    return Observable.of(this._todos);
+  }
+
+
+  isAllCompleted(): boolean {
+    return this.todos.every(item => item.completed);
+  }
+
+  setAll(completed: boolean) {
+    this.todos.forEach(item => item.completed = completed);
+    this.saveLocally();
+  }
+
+  removeCompleted() {
+    this.todos = this.todos.filter(item => !item.completed);
+  }
+
+  get remainingCount(): number {
+    return this.todos.filter(item => !item.completed).length;
+  }
+
+  get completedCount(): number {
+    return this.todos.filter(item => item.completed).length;
+  }
+
+  toggleCompletion(todo: Todo) {
+    todo.completed = !todo.completed;
+    this.saveLocally();
+  }
+
+  remove(todo: Todo) {
+    this.todos = this.todos.filter(item => item !== todo);
+  }
+
+  add(title: string) {
+    const item: Todo = new Todo();
+    item.title = title;
+    this.todos.push(item);
+    this.saveLocally();
+  }
+
   /**
    * Returns an Observable for the HTTP GET request for the JSON resource.
    * @return {TODO[]} The Observable for the HTTP request.
    */
-  getListOfItems(): Observable<TODO[]> {
-    return this.httpService.get('assets/todo.json') //Using response from local json file
+  getListOfItems(): Observable<Todo[]> {
+    return this.httpService.get('assets/todo.json')
       .map(response => response.json().results)
-      .map((items: any[]) => items.map(item => new TODO(item)))
+      .map((items: any[]) => items.map(item => new Todo(item)))
       .catch(this.handleError);
+  }
+
+  private saveLocally() {
+    const raw: any[] = this.todos.map(item => item.serialize());
+    localStorage.setItem('todo-list', JSON.stringify(raw));
   }
 
   /**

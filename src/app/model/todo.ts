@@ -1,24 +1,28 @@
-import { Priority } from '../enum/priority';
+export class Todo {
+  completed: boolean;
+  editing: boolean;
 
-export class TODO {
-  id: number;
-  description: string;
-  priority: Priority;
-
-  // TODO:
+  private _title: string;
+  get title() {
+    return this._title;
+  }
+  set title(value: string) {
+    this._title = value.trim();
+  }
 
   constructor(data?: any) {
     if (data) {
-      this.id = data.id;
-      this.description = data.description;
-      this.priority = data.priority;
+      this.title = data.title;
+      this.completed = data.completed;
+      this.editing = data.editing;
     }
   }
 
   serialize(): any {
     return {
-      description: this.description
+      title: this.title,
+      completed: !!this.completed,
+      editing: !!this.editing
     };
   }
-
 }

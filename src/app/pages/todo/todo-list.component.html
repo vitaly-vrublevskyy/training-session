@@ -1,0 +1,57 @@
+<section class="todoapp">
+  <header class="header">
+    <h1>todos</h1>
+    <input [(ngModel)]="newTodoText"
+           (keyup.enter)="store.add(newTodoText); newTodoText = null;"
+           class="new-todo"
+           placeholder="What needs to be done?"
+           autofocus="" >
+  </header>
+  <section *ngIf="store.todos.length > 0" class="main" >
+    <input *ngIf="store.todos.length"
+           #toggleall
+           [checked]="store.isAllCompleted()"
+           (click)="store.setAll(toggleall.checked)"
+           class="toggle-all"
+           type="checkbox">
+    <ul class="todo-list">
+      <li *ngFor="let todo of store.todos"
+          [class.completed]="todo.completed"
+          [class.editing]="todo.editing">
+        <div class="view">
+          <input (click)="store.toggleCompletion(todo)"
+                 [checked]="todo.completed"
+                 class="toggle"
+                 type="checkbox" >
+          <label ><!--  TODO: (dblclick)="editTodo(todo)" -->
+            {{todo.title}}
+          </label>
+          <button (click)="store.remove(todo)" class="destroy" ></button>
+        </div>
+
+        <!--FIXME:
+         (blur)="stopEditing(todo, editedtodo.value)"
+         (keyup.enter)="updateEditingTodo(todo, editedtodo.value)"
+         (keyup.escape)="cancelEditingTodo(todo)"
+        -->
+        <input *ngIf="todo.editing"
+               [value]="todo.title"
+               #editedtodo
+               class="edit">
+      </li>
+    </ul>
+  </section>
+
+  <footer class="footer" *ngIf="store.todos.length > 0">
+    <span class="todo-count">
+      <strong>{{ store.remainingCount }}</strong> {{store.remainingCount == 1 ? 'item' : 'items'}} left
+    </span>
+    <!--TODO: logic using NgStore  - 3 states -->
+    <ul class="filters">
+      <li><a>All</a></li>
+      <li><a class="active" clic>Active</a></li>
+      <li><a class="completed" class="selected">Completed</a></li>
+    </ul>
+    <button class="clear-completed" *ngIf="store.completedCount > 0" (click)="store.removeCompleted()">Clear completed</button>
+  </footer>
+</section>
