@@ -7,7 +7,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.service';
 import { TodoListModule } from './pages/todo/todo-list.module';
-
+import 'hammerjs';
+import { MaterialModule } from './material/material.module';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { TodoListModule } from './pages/todo/todo-list.module';
     FormsModule,
     AppRoutingModule,
     /*Pages*/
-    TodoListModule
+    TodoListModule,
+    MaterialModule
   ],
   providers: [
     TodoService
