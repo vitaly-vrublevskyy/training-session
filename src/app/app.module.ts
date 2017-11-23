@@ -9,6 +9,7 @@ import { AppRoutingModule } from './app-routing.service';
 import { TodoListModule } from './pages/todo/todo-list.module';
 import 'hammerjs';
 import { MaterialModule } from './material/material.module';
+import { MatNativeDateModule } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -19,10 +20,11 @@ import { MaterialModule } from './material/material.module';
     BrowserAnimationsModule,
     HttpModule,
     FormsModule,
+    MatNativeDateModule,
     AppRoutingModule,
     /*Pages*/
     TodoListModule,
-    MaterialModule
+    MaterialModule // Rename
   ],
   providers: [
     TodoService

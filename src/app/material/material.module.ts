@@ -1,7 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MaterialComponent } from './material.component';
-import { MatButtonModule, MatCheckboxModule } from '@angular/material';
+import {
+  MatButtonModule, MatCheckboxModule, MatDatepickerModule,
+  MatInputModule
+} from '@angular/material';
 import { MaterialRoutingModule } from './material-routing.module';
 
 @NgModule({
@@ -9,7 +12,9 @@ import { MaterialRoutingModule } from './material-routing.module';
     CommonModule,
     MaterialRoutingModule,
     MatButtonModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatDatepickerModule,
+    MatInputModule,
   ],
   declarations: [MaterialComponent]
 })
