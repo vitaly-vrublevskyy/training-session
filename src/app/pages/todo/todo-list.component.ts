@@ -33,7 +33,6 @@ export class TodoListComponent implements OnInit {
     } else {
       this.store.update(todo, editedTitle);
     }
-    // TODO: save
   }
 
   // TODO: Ad ngRx for 3 state
