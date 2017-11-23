@@ -23,20 +23,18 @@
                  [checked]="todo.completed"
                  class="toggle"
                  type="checkbox" >
-          <label ><!--  TODO: (dblclick)="editTodo(todo)" -->
+          <label (dblclick)="todo.editing = true">
             {{todo.title}}
           </label>
           <button (click)="store.remove(todo)" class="destroy" ></button>
         </div>
 
-        <!--FIXME:
-         (blur)="stopEditing(todo, editedtodo.value)"
-         (keyup.enter)="updateEditingTodo(todo, editedtodo.value)"
-         (keyup.escape)="cancelEditingTodo(todo)"
-        -->
         <input *ngIf="todo.editing"
                [value]="todo.title"
                #editedtodo
+               (blur)="stopEditing(todo, editedtodo.value)"
+               (keyup.enter)="updateEditingTodo(todo, editedtodo.value)"
+               (keyup.escape)="todo.editing = false"
                class="edit">
       </li>
     </ul>

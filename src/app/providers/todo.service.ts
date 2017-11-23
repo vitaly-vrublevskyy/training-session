@@ -73,6 +73,11 @@ export class TodoService {
     this.saveLocally();
   }
 
+  update(item: Todo, title: string) {
+    item.title = title;
+    this.saveLocally();
+  }
+
   /**
    * Returns an Observable for the HTTP GET request for the JSON resource.
    * @return {TODO[]} The Observable for the HTTP request.
