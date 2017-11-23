@@ -62,8 +62,6 @@ export class AppComponent implements OnInit {
   addItem_live() {
     const item: TODO = new TODO();
     item.description = this.name;
-    this.service.addItem(item)
-      .subscribe(entity => this.collection.push(entity));
   }
 
   deleteItem(target: TODO) {
